@@ -1,0 +1,14 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "582289e6-4654-5d3d-907d-c44f9ca971c3",
+  "TopicArn" : "arn:aws:sns:eu-west-1:153944352978:int-plays-consumer-resources-PlaysTopic-H0IYC5JACBRI",
+  "Message" : "{\"request\":{\"activityType\":\"PLAYS\",\"requestType\":\"CREATE\",\"identity\":\"vE+k2k7apTprxtVv/HuvbQ==\",\"activityTime\":\"2015-04-16T15:43:57.462Z\",\"resourceDomain\":\"tv\",\"resourceId\":\"resource_id_100\",\"resourceType\":\"episode\",\"action\":\"started\",\"actionContext\":\"urn:bbc:tv:version_offset:b332jmxtm#0\",\"metaData\":null},\"id\":{\"receiptHandle\":\"AQEB7jwNdcR2xZUhWXddQMWhTunCeP8rQoncfa6sPb4Fe0h6C2wgFxRNh0g5fyvBkvNUEiSwMGBq/vJLaw0EhcwYB69spwAizsMX6J7Mfn0McYygD0qgp3LUsHneiGyQfiXkmTTNx7MSWd6UAFSqnSeLjBD4EvThpEyfvPV00/sud22vU8jqunIys7aOQwgpkq9gpfnxwqbXh8F/wAg9LROWNsuY3ChSv2XzciAX5BuV4M82mWehAWxhIeu+MnmLzmgClz8rXaCwzetSp4kjDmvR646fX6U8ru1KtMv+9t6SQbKWnSIi8XWCTTVGgiBsJ2Tkj2lyo363VB/NSvmzeDvGhJ7HFriZQJwvkZB6NA9sd/XA9y1skEGla8YG8tw9f1bndre+UTLupeb8Z+lv+GYf1gZeIKpOIF6rnkls544NRBQ=\",\"value\":\"64ecb073-e44f-11e4-b391-0a85af9c4863\"}}",
+  "Timestamp" : "2015-04-16T15:43:57.733Z",
+  "SignatureVersion" : "1",
+  "Signature" : "Bah/M4FpT2nFOfk6i/J525HSmO/LzJ652a+G+NmE0mwEhosX7NYuNSWdNmsVv1/yFM9cvJg7WDw9XgyVCrFW+aaq3oBM7pPLZPoQ4+yHSHcupp0A3Me1eGtWFshGV1hWk7WCIYVPs7ZFJC5sX0fcETiGBkpRz5ohe5gqFWa41XAT/F6EdZHXU6ZCQZh0IJrla81Lae0VTAYXY9oVDEna/B4Z+q6zLAWsjmWv0tn9RvPlKEjtY4sDDI45Y168df3/B7OT29JXLK4l7iMu+2OtlESKCa10c03Hoc3IjEVOM+4Jw12WWQw6jFCt2TZPbrcTBxrVkqMJ7iT+i2KmqRtHjA==",
+  "SigningCertURL" : "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem",
+  "UnsubscribeURL" : "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:153944352978:int-plays-consumer-resources-PlaysTopic-H0IYC5JACBRI:fbf3fbdd-9643-4aad-8eec-46073f030fcb",
+  "MessageAttributes" : {
+    "heartbeat" : {"Type":"String","Value":"{StringValue: true,StringListValues: [],BinaryListValues: [],DataType: String}"}
+  }
+}
