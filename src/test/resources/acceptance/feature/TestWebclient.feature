@@ -1,5 +1,5 @@
 
-@web
+@WebDriver
 Feature: Testing Web client
 
   Scenario: Test BBC news page

@@ -63,7 +63,7 @@ public class SharedDriver extends WebDriverException {
 
     String getSessionId;
 
-    @Before("~@noWebDriver")
+    @Before("@WebDriver")
     public static void setUp() throws Exception {
         String browser  =  System.getProperty("browser");
         String key = browser;    //browser;
@@ -229,7 +229,7 @@ public class SharedDriver extends WebDriverException {
 
 
 
-    @After
+    @After("@WebDriver")
     public static void close(Scenario scenario)  {
 
     	/*StringBuffer verificationErrors = new StringBuffer();
