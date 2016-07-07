@@ -4,13 +4,9 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
-import myBBC_Common.dynamoDB.IntegrationDbClient;
-import myBBC_Common.sqs.IntegrationSqsClient;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
+
+import cucumber.runtime.ScenarioImpl;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,17 +14,13 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-
-import javax.inject.Inject;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.fail;
@@ -42,7 +34,7 @@ import static junit.framework.Assert.fail;
  */
 public class SharedDriver extends WebDriverException {
 
-    private static WebDriver driver;
+    private static RemoteWebDriver driver = null;
     private static ChromeDriverService _chrome;
     private static DesiredCapabilities  _capabilities;
     public static String directory = System.getProperty("user.dir");
@@ -63,18 +55,21 @@ public class SharedDriver extends WebDriverException {
 
     String getSessionId;
 
-    @Before("@WebDriver")
-    public static void setUp() throws Exception {
+    @Before()
+    public static void setUp(Scenario scenario) throws Exception {
         String browser  =  System.getProperty("browser");
         String key = browser;    //browser;
+        //System.out.println(scenario.getSourceTagNames());
         System.out.println("The Browser used is: "+key);
-        if (key.equalsIgnoreCase("chrome")){
+        if (scenario.getSourceTagNames().contains("@chrome")){
             setChromeDriver();
-        } else if (key.equalsIgnoreCase("firefox")){
+        } else if (scenario.getSourceTagNames().contains("@firefox")){
             setFirefoxDriver();
-        } else if(key.equalsIgnoreCase("phantomJs")){
-            setPhantomJs();
-        } else {
+       }
+// else if(key.equalsIgnoreCase("phantomJs")){
+//            setPhantomJs();
+//        }
+        else {
             setInternetExplorerDriver();
         }
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -101,16 +96,40 @@ public class SharedDriver extends WebDriverException {
     public static void setFirefoxDriver(){
 
 
-        //_capabilities = DesiredCapabilities.firefox();
+//        //_capabilities = DesiredCapabilities.firefox();
+//        FirefoxProfile _profile = new FirefoxProfile();
+//        File f =  new File(FIREFOX_LOCATION);
+//        FirefoxBinary _ffbinary = new FirefoxBinary(f);
+//        System.out.println("YOU ARE HERE################### FIREFOX");
+//        _profile.setPreference("network.proxy.type", 1);
+//        _profile.setPreference("network.proxy.http", "www-cache.reith.bbc.co.uk");
+//        _profile.setPreference("network.proxy.http_port", 80);
+//        _profile.setPreference("network.proxy.ssl", "www-cache.reith.bbc.co.uk");
+//        _profile.setPreference("network.proxy.ssl_port", 80);
+//        driver = new FirefoxDriver(_ffbinary,_profile);
+//
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setJavascriptEnabled(true);
         FirefoxProfile _profile = new FirefoxProfile();
-        File f =  new File(FIREFOX_LOCATION);
-        FirefoxBinary _ffbinary = new FirefoxBinary(f);
         _profile.setPreference("network.proxy.type", 1);
         _profile.setPreference("network.proxy.http", "www-cache.reith.bbc.co.uk");
         _profile.setPreference("network.proxy.http_port", 80);
         _profile.setPreference("network.proxy.ssl", "www-cache.reith.bbc.co.uk");
         _profile.setPreference("network.proxy.ssl_port", 80);
-        driver = new FirefoxDriver(_ffbinary,_profile);
+       // FirefoxDriver driver = new FirefoxDriver(new FirefoxBinary(new File(FIREFOX_LOCATION)),_profile);
+        caps.setCapability(FirefoxDriver.BINARY, FIREFOX_LOCATION);
+        caps.setCapability(FirefoxDriver.PROFILE, _profile);
+        caps.setPlatform(Platform.WINDOWS);
+
+        try {
+            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), caps.firefox());
+        }catch (MalformedURLException mue){
+            mue.printStackTrace();
+        }finally {
+            if (driver != null) {
+                driver.quit();
+            }
+        }
     }
         
     /*public static void setChromeDriver(){
@@ -171,43 +190,44 @@ public class SharedDriver extends WebDriverException {
     public static void setChromeDriver(){
 
         System.setProperty("webdriver.chrome.driver", drivers+File.separator+"chromedriver"+File.separator+"chromedriver.exe");
-        ChromeOptions browser_setup = new ChromeOptions();
-        browser_setup.setBinary(new File(CHROME_LOCATION));
-        driver = new ChromeDriver(browser_setup);
+//        ChromeOptions browser_setup = new ChromeOptions();
+//        browser_setup.setBinary(new File(CHROME_LOCATION));
+        System.out.println("YOU ARE HERE################### CHROME");
+//        driver = new ChromeDriver(browser_setup);
+
+
 
     }
 
 
-    public static void setPhantomJs(){
-
-        String OSIAmIn = System.getProperty("os.name").toLowerCase();
-        System.out.println("The OS i am using is :"+OSIAmIn);
-
-        _capabilities = DesiredCapabilities.phantomjs();
-        _capabilities.setJavascriptEnabled(true);
-        _capabilities.setCapability("takesScreenshot", true);
-        _capabilities.setCapability("phantomjs.page.settings.userAgent", browserCapabilities);
-
-        if (OSIAmIn.contains("windows")) {
-            _capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, drivers+File.separator+"phantomJs"+File.separator+"phantomjs.exe");
-        } else {
-            //_capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomJsDriver4Linux + File.separator + "phantomjs");
-        }
-
-
-        try {
-            driver = new PhantomJSDriver(_capabilities);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public static void setPhantomJs(){
+//
+//        String OSIAmIn = System.getProperty("os.name").toLowerCase();
+//        System.out.println("The OS i am using is :"+OSIAmIn);
+//
+//        _capabilities = DesiredCapabilities.phantomjs();
+//        _capabilities.setJavascriptEnabled(true);
+//        _capabilities.setCapability("takesScreenshot", true);
+//        _capabilities.setCapability("phantomjs.page.settings.userAgent", browserCapabilities);
+//
+//        if (OSIAmIn.contains("windows")) {
+//            _capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, drivers+File.separator+"phantomJs"+File.separator+"phantomjs.exe");
+//        } else {
+//            //_capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomJsDriver4Linux + File.separator + "phantomjs");
+//        }
+//
+//
+//        try {
+//            driver = new PhantomJSDriver(_capabilities);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public static void setInternetExplorerDriver(){
-
         _capabilities = DesiredCapabilities.internetExplorer();
         _capabilities.setCapability("ignoreProtectedModeSettings", true);
-
         driver = new InternetExplorerDriver(_capabilities);
     }
 
@@ -227,9 +247,7 @@ public class SharedDriver extends WebDriverException {
         return getSessionId;
     }
 
-
-
-    @After("@WebDriver")
+    @After()
     public static void close(Scenario scenario)  {
 
     	/*StringBuffer verificationErrors = new StringBuffer();

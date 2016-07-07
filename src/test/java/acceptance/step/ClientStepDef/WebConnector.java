@@ -7,7 +7,7 @@ package acceptance.step.ClientStepDef;
  * Time: 13:30
  * To change this template use File | Settings | File Templates.
  */
-import org.apache.log4j.Logger;
+
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;

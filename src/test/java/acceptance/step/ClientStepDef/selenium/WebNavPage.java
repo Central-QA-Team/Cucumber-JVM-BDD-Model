@@ -8,7 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
-import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
+//import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.*;
@@ -706,18 +706,18 @@ public class WebNavPage {
             fail("Expected values "+expected+"are not present in the table "+ tableMap);
         }
     }
-    public static void rightClickOnTableElement(String xpath, String Linkxpath){
-        rightClickTableFirstRow(xpath);
-        clickALink(Linkxpath);
-    }
+//    public static void rightClickOnTableElement(String xpath, String Linkxpath){
+//        rightClickTableFirstRow(xpath);
+//        clickALink(Linkxpath);
+//    }
+//
 
-
-    public static void rightClickTableFirstRow(String xpath){
-        WebElement column=selectFirstRowOnTable(xpath);
-        JavascriptLibrary js=new JavascriptLibrary();
-        js.callEmbeddedSelenium(getDriver(), "triggerMouseEventAt", column,"contextmenu");
-        waitForShortSpan();
-    }
+//    public static void rightClickTableFirstRow(String xpath){
+//        WebElement column=selectFirstRowOnTable(xpath);
+//        JavascriptLibrary js=new JavascriptLibrary();
+//        js.callEmbeddedSelenium(getDriver(), "triggerMouseEventAt", column,"contextmenu");
+//        waitForShortSpan();
+//    }
     public static WebElement selectFirstRowOnTable(String xpath){
         WebElement element = getDriver().findElement(By.xpath(xpath));
         List<WebElement> rowCollection = element.findElements(By.xpath(xpath + "/tbody/tr"));
@@ -731,13 +731,13 @@ public class WebNavPage {
         column.click();
         return column;
     }
-    public static void rightClickTableRow(String xpath,int rowNumber){
-        WebElement column=selectRowOnTable(xpath,rowNumber);
-        JavascriptLibrary js=new JavascriptLibrary();
-        js.callEmbeddedSelenium(getDriver(), "triggerMouseEventAt", column,"contextmenu");
-        waitForShortSpan();
-
-    }
+//    public static void rightClickTableRow(String xpath,int rowNumber){
+//        WebElement column=selectRowOnTable(xpath,rowNumber);
+//        JavascriptLibrary js=new JavascriptLibrary();
+//        js.callEmbeddedSelenium(getDriver(), "triggerMouseEventAt", column,"contextmenu");
+//        waitForShortSpan();
+//
+//    }
     public static WebElement selectRowOnTable(String xpath,int rowNumber){
         WebElement element=getDriver().findElement(By.xpath(xpath + "/tbody/tr[" + rowNumber + "]/td[1]"));
         element.click();

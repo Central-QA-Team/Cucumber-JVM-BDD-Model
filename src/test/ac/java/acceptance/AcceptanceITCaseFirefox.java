@@ -8,18 +8,19 @@ package acceptance;
  * To change this template use File | Settings | File Templates.
  */
 
+import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 import org.junit.runner.RunWith;
 
 
 @RunWith(Cucumber.class)
-@Cucumber.Options(
+@CucumberOptions(
         format = {"pretty", "html:target/cucumber-report", "json:target/cucumber-report.json"},
         features = {"classpath:acceptance/feature"},
         glue = {"acceptance/step/ClientStepDef"},
-        tags = {"@test"},
+        tags = {"@firefox"},
         strict = true)
-public class AcceptanceITCase {
+public class AcceptanceITCaseFirefox {
 
 }
